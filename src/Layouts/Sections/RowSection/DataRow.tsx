@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "../../../Components/Button";
 import type { JSX } from 'react';
+import { AddNewColumn } from "../../../Components/AddNewColumn";
 
 
 interface DataRowSectionProps {
@@ -26,6 +27,11 @@ export const DataRow = ({ isToolbarVisible, onToolbarToggle, onAddColumn }: Data
         if (action === "hide fields") {
             console.log("Opening column visibility panel...");
         }
+    };
+
+    const handleAddColumn = (name: string) => {
+        onAddColumn(name);
+        setIsModalOpen(false);
     };
 
     const toolbarActions = [
@@ -147,6 +153,11 @@ export const DataRow = ({ isToolbarVisible, onToolbarToggle, onAddColumn }: Data
                     </Button>
                 </div>
             </div>
+            <AddNewColumn
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onAddColumn={handleAddColumn}
+            />
         </>
     );
 }
