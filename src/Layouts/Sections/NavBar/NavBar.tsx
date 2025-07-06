@@ -59,38 +59,39 @@ export const NavBar = (): JSX.Element => {
                                         />
                                     </BreadcrumbSeparator>
                                 )}
-                                <BreadcrumbItem>                    <BreadcrumbLink
-                                    href={item.href}
-                                    className={`inline-flex items-center justify-center gap-2 relative flex-[0_0_auto] ${item.active ? "" : "hover:text-[#121212]"
-                                        }`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleButtonClick("breadcrumb", item);
-                                    }}
-                                >
-                                    <span
-                                        className={`relative w-fit mt-[-1.00px] font-paragraph-14-s-medium-14-20 font-[number:var(--paragraph-14-s-medium-14-20-font-weight)] ${item.active ? "text-[#121212]" : "text-[#afafaf]"
-                                            } text-[length:var(--paragraph-14-s-medium-14-20-font-size)] tracking-[var(--paragraph-14-s-medium-14-20-letter-spacing)] leading-[var(--paragraph-14-s-medium-14-20-line-height)] whitespace-nowrap [font-style:var(--paragraph-14-s-medium-14-20-font-style)]`}
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink
+                                        href={item.href}
+                                        className={`inline-flex items-center justify-center gap-2 relative flex-[0_0_auto] ${item.active ? "" : "hover:text-[#121212]"
+                                            }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleButtonClick("breadcrumb", item);
+                                        }}
                                     >
-                                        {item.label}
-                                    </span>                      {item.active && (
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="w-6 h-6 p-0 justify-center gap-2 rounded flex items-center"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleButtonClick("more", item);
-                                            }}
+                                        <span
+                                            className={`relative w-fit mt-[-1.00px] font-paragraph-14-s-medium-14-20 font-[number:var(--paragraph-14-s-medium-14-20-font-weight)] ${item.active ? "text-[#121212]" : "text-[#afafaf]"
+                                                } text-[length:var(--paragraph-14-s-medium-14-20-font-size)] tracking-[var(--paragraph-14-s-medium-14-20-letter-spacing)] leading-[var(--paragraph-14-s-medium-14-20-line-height)] whitespace-nowrap [font-style:var(--paragraph-14-s-medium-14-20-font-style)]`}
                                         >
-                                            <img
-                                                className="w-5 h-5"
-                                                alt="More"
-                                                src="https://c.animaapp.com/mclmkdkf288FZk/img/more.svg"
-                                            />
-                                        </Button>
-                                    )}
-                                </BreadcrumbLink>
+                                            {item.label}
+                                        </span>                      {item.active && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="w-6 h-6 p-0 justify-center gap-2 rounded flex items-center"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleButtonClick("more", item);
+                                                }}
+                                            >
+                                                <img
+                                                    className="w-5 h-5"
+                                                    alt="More"
+                                                    src="https://c.animaapp.com/mclmkdkf288FZk/img/more.svg"
+                                                />
+                                            </Button>
+                                        )}
+                                    </BreadcrumbLink>
                                 </BreadcrumbItem>
                             </Fragment>
                         ))}
