@@ -711,59 +711,81 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                 const isSelected = selectedCell === cellRef;
                 const columnName = sheet1Headers[colIndex]
 
-                let textAlign = "left";
+                let textAlign: "left" | "right" | "center" = "left";
+                
                 if (columnName === "Priority") textAlign = "center";
                 if (columnName === 'Status') textAlign = "center"
                 if (["Submitted", "Due Date", "Est. Value"].includes(columnName)) textAlign = "right";
-
-                let backgroundColor = cellData?.style?.backgroundColor;
-                if (columnName === "Status") {
-                  switch (cellData?.value) {
-                    case "In-process":
-                      backgroundColor = "#FFF3D6";
-                      break;
-                    case "Need to start":
-                      backgroundColor = "#E2E8F0";
-                      break;
-                    case "Complete":
-                      backgroundColor = "#D3F2E3";
-                      break;
-                    case "Blocked":
-                      backgroundColor = "#FFE1DE";
-                      break;
-                    default:
-                      backgroundColor = "white";
-                  }
-                }
-
                 return (
-                  <input
-                    key={cellRef}
-                    ref={(el) => {
-                      if (el) cellRefs.current[cellRef] = el;
-                    }}
-                    className={`px-1 text-xs outline-none  ${isSelected ? "border-2 border-blue-500 bg-blue-50" : "border border-x-gray-200 border-y-gray-100 bg-[#FFFFFF]"}`}
-                    style={{
-                      width: columnWidths[colIndex] || 96,
-                      height: rowHeights[rowIndex] || 32,
-                      fontWeight: cellData?.style?.bold ? "bold" : "normal",
-                      fontStyle: cellData?.style?.italic ? "italic" : "normal",
-                      textDecoration: cellData?.style?.underline ? "underline" : "none",
-                      textAlign: cellData?.style?.align || textAlign,
-                      fontSize: cellData?.style?.fontSize ? `${cellData.style.fontSize}px` : "12px",
-                      fontFamily: cellData?.style?.fontFamily || "Arial",
-                      backgroundColor: cellData?.style?.backgroundColor,
-                      color: cellData?.style?.textColor,
-                      justify: 'center'
-                    }}
-                    value={cellData?.value || ""}
-                    onChange={(e) => handleCellEdit(cellRef, e.target.value)}
-                    onFocus={() => handleCellSelect(cellRef)}
-                    onKeyDown={(e) => handleKeyDown(e, cellRef)}
-                    onDoubleClick={() => setIsEditing(true)}
-                    onBlur={() => setIsEditing(false)}
-                  />
+                  columnName === "Status" ? (
+                    <button
+                      key={cellRef}
+                      className={`w-full h-full text-xs font-medium rounded-sm border bg-white flex justify-center items-center ${
+                        isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200"
+                      } `}
+                      style={{
+                        width: columnWidths[colIndex] || 96,
+                        height: rowHeights[rowIndex] || 32,
+                        fontSize: cellData?.style?.fontSize ? `${cellData.style.fontSize}px` : "12px",
+                        fontFamily: cellData?.style?.fontFamily || "Arial",
+                        fontWeight: cellData?.style?.bold ? "bold" : "normal",
+                        fontStyle: cellData?.style?.italic ? "italic" : "normal",
+                        textDecoration: cellData?.style?.underline ? "underline" : "none",
+                        textAlign: "center",
+                      }}
+                      onFocus={() => handleCellSelect(cellRef)}
+                      onKeyDown={(e) => handleKeyDown(e, cellRef)}
+                      onDoubleClick={() => setIsEditing(true)}
+                      onBlur={() => setIsEditing(false)}
+                    >
+                      <div className={`rounded-2xl w-[100px] font-bold ${
+                        cellData?.value === "Complete"
+                          ? "bg-[#D3F2E3] text-[#0A6E3D]"
+                          : cellData?.value === "In-process"
+                          ? "bg-[#FFF3D6] text-[#85640B]"
+                          : cellData?.value === "Need to start"
+                          ? "bg-[#E2E8F0] text-[#475569]"
+                          : cellData?.value === "Blocked"
+                          ? "bg-[#FFE1DE] text-[#C22219]"
+                          : "bg-white text-gray-800"
+                      }`}
+                      >
+                      {cellData?.value || " "}
+                      </div>
+                    </button>
+                  ) : (
+                    <input
+                      key={cellRef}
+                      ref={(el) => {
+                        if (el) cellRefs.current[cellRef] = el;
+                      }}
+                      className={`px-1 text-xs outline-none font-extrabold ${
+                        isSelected
+                          ? "border-2 border-blue-500 bg-blue-50"
+                          : "border border-x-gray-200 border-y-gray-100 bg-[#FFFFFF]"
+                      }`}
+                      style={{
+                        width: columnWidths[colIndex] || 96,
+                        height: rowHeights[rowIndex] || 32,
+                        fontWeight: cellData?.style?.bold ? "bold" : "normal",
+                        fontStyle: cellData?.style?.italic ? "italic" : "normal",
+                        textDecoration: cellData?.style?.underline ? "underline" : "none",
+                        textAlign: (cellData?.style?.align as "left" | "right" | "center") || textAlign,
+                        fontSize: cellData?.style?.fontSize ? `${cellData.style.fontSize}px` : "12px",
+                        fontFamily: cellData?.style?.fontFamily || "Arial",
+                        backgroundColor: cellData?.style?.backgroundColor,
+                        color: cellData?.style?.textColor,
+                      }}
+                      value={cellData?.value || ""}
+                      onChange={(e) => handleCellEdit(cellRef, e.target.value)}
+                      onFocus={() => handleCellSelect(cellRef)}
+                      onKeyDown={(e) => handleKeyDown(e, cellRef)}
+                      onDoubleClick={() => setIsEditing(true)}
+                      onBlur={() => setIsEditing(false)}
+                    />
+                  )
                 );
+                
               })}
             </div>
           ))}
