@@ -8,7 +8,7 @@ import { TableSection } from "../Layouts/Sections/TableSection/TableSection";
 
 export const Spreadsheet = (): JSX.Element => {
   const [isToolbarVisible, setIsToolbarVisible] = useState(false);
-  const [cols, setCols] = useState(26);
+  const [cols, setCols] = useState(10);
   const [columnNames, setColumnNames] = useState<{ [key: number]: string }>({});
 
   const handleAddColumn = (name: string) => {

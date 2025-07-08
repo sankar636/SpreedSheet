@@ -27,7 +27,7 @@ import {
   Smile as SmileIcon,
   ArrowUp as ArrowUpIcon,
   Clock as ClockIcon,
-  DollarSign as DollarSignIcon,
+  IndianRupee as IndianRupeeSign,
   ChevronDown as DropDownIcon,
   Hand as HandIcon
 } from "lucide-react";
@@ -80,7 +80,7 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
 
         A1: { value: "Launch social media campaign for product" },
         B1: { value: "15-11-2024" },
-        C1: { value: "In-process", style: { backgroundColor: "#fde68a", } },
+        C1: { value: "In-process", style: { backgroundColor: "#FFF3D6", } },
         D1: { value: "Aisha Patel" },
         E1: { value: "www.aishapatel.com" },
         F1: { value: "Sophie Choudhury" },
@@ -139,16 +139,16 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
 
   const [columnWidths, setColumnWidths] = useState<{ [key: number]: number }>(() => {
     const initialWidths = [
-      240,  
+      240,
       140,
-      140, 
-      140, 
-      150, 
       140,
-      160, 
-      100, 
-      120, 
-      120, 
+      140,
+      150,
+      140,
+      160,
+      100,
+      120,
+      120,
     ];
     return initialWidths.reduce((acc, width, index) => {
       acc[index] = width;
@@ -173,15 +173,15 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
   };
 
   const sheet1Headers = [
-    "Job Request",   
-    "Submitted",     
-    "Status",        
-    "Submitter",     
-    "URL",           
-    "Assigned",      
-    "Priority",      
-    "Due Date",      
-    "Est. Value",    
+    "Job Request",
+    "Submitted",
+    "Status",
+    "Submitter",
+    "URL",
+    "Assigned",
+    "Priority",
+    "Due Date",
+    "Est. Value",
   ];
 
   // Parse cell reference (e.g., "A1" -> {col: 0, row: 0})
@@ -645,11 +645,23 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
 
             {Array.from({ length: cols }, (_, colIndex) => {
               const label = sheet1Headers[colIndex] || getColumnLetter(colIndex);
+              const colHeaderName = sheet1Headers[colIndex]
+              let backgroundColor = "#EEEEEE";
+              if (colHeaderName === "Assigned") {
+                backgroundColor = "#E8F0E9";
+              } else if (colHeaderName === "Priority" || colHeaderName === "Due Date") {
+                backgroundColor = "#EAE3FC";
+              } else if (colHeaderName === "Est. Value") {
+                backgroundColor = "#FFE9E0";
+              }
               return (
                 <div
                   key={colIndex}
                   className="relative flex items-center justify-between px-2 py-1 text-sm font-medium bg-[#EEEEEE] border border-r border-gray-300 whitespace-nowrap"
-                  style={{ width: columnWidths[colIndex] || 120 }}
+                  style={{
+                    width: columnWidths[colIndex] || 120,
+                    backgroundColor
+                  }}
                 >
                   <div className="flex items-center gap-1">
                     {
@@ -665,7 +677,7 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                         </div>,
                         "Priority": <ArrowUpIcon className="w-4 h-4 text-gray-500" />,
                         "Due Date": <ClockIcon className="w-4 h-4 text-gray-500" />,
-                        "Est. Value": <DollarSignIcon className="w-4 h-4 text-gray-500" />
+                        "Est. Value": <IndianRupeeSign className="w-4 h-4 text-gray-500" />
                       }[label] || null
                     }
                     <span className="text-sm">{label}</span>
@@ -696,9 +708,34 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
               {Array.from({ length: cols }, (_, colIndex) => {
                 const cellRef = getCellRef(colIndex, rowIndex);
                 const cellData = data[cellRef];
-                const isSelected = selectedCell === cellRef; 
-                console.log(isSelected && cellData);
-                               
+                const isSelected = selectedCell === cellRef;
+                const columnName = sheet1Headers[colIndex]
+
+                let textAlign = "left";
+                if (columnName === "Priority") textAlign = "center";
+                if (columnName === 'Status') textAlign = "center"
+                if (["Submitted", "Due Date", "Est. Value"].includes(columnName)) textAlign = "right";
+
+                let backgroundColor = cellData?.style?.backgroundColor;
+                if (columnName === "Status") {
+                  switch (cellData?.value) {
+                    case "In-process":
+                      backgroundColor = "#FFF3D6";
+                      break;
+                    case "Need to start":
+                      backgroundColor = "#E2E8F0";
+                      break;
+                    case "Complete":
+                      backgroundColor = "#D3F2E3";
+                      break;
+                    case "Blocked":
+                      backgroundColor = "#FFE1DE";
+                      break;
+                    default:
+                      backgroundColor = "white";
+                  }
+                }
+
                 return (
                   <input
                     key={cellRef}
@@ -712,11 +749,12 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                       fontWeight: cellData?.style?.bold ? "bold" : "normal",
                       fontStyle: cellData?.style?.italic ? "italic" : "normal",
                       textDecoration: cellData?.style?.underline ? "underline" : "none",
-                      textAlign: cellData?.style?.align || "left",
+                      textAlign: cellData?.style?.align || textAlign,
                       fontSize: cellData?.style?.fontSize ? `${cellData.style.fontSize}px` : "12px",
                       fontFamily: cellData?.style?.fontFamily || "Arial",
-                      // backgroundColor: cellData?.style?.backgroundColor,
+                      backgroundColor: cellData?.style?.backgroundColor,
                       color: cellData?.style?.textColor,
+                      justify: 'center'
                     }}
                     value={cellData?.value || ""}
                     onChange={(e) => handleCellEdit(cellRef, e.target.value)}
@@ -740,7 +778,9 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
               className="w-24"
               aria-label="Number of rows to add"
             />
-            <Button className="bg-[#4b6a4f]">Add Rows</Button>
+            <Button className="bg-[#4b6a4f]"
+              onClick={() => handleAddRows()}
+            >Add Rows</Button>
             <span className="text-sm text-gray-500">number of rows to add</span>
           </div>
         </div>
