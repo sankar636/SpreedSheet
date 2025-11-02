@@ -169,7 +169,7 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
   // Generate column letters (A, B, C, ..., Z)
   const getColumnLetter = (index: number): string => {
 
-    return String.fromCharCode(65 + index); // Default A, B, C...
+    return String.fromCharCode(65 + index);
   };
 
   const sheet1Headers = [
@@ -712,7 +712,7 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                 const columnName = sheet1Headers[colIndex]
 
                 let textAlign: "left" | "right" | "center" = "left";
-                
+
                 if (columnName === "Priority") textAlign = "center";
                 if (columnName === 'Status') textAlign = "center"
                 if (["Submitted", "Due Date", "Est. Value"].includes(columnName)) textAlign = "right";
@@ -720,9 +720,8 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                   columnName === "Status" ? (
                     <button
                       key={cellRef}
-                      className={`w-full h-full text-xs font-medium rounded-sm border bg-white flex justify-center items-center ${
-                        isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200"
-                      } `}
+                      className={`w-full h-full text-xs font-medium rounded-sm border bg-white flex justify-center items-center ${isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200"
+                        } `}
                       style={{
                         width: columnWidths[colIndex] || 96,
                         height: rowHeights[rowIndex] || 32,
@@ -738,19 +737,18 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                       onDoubleClick={() => setIsEditing(true)}
                       onBlur={() => setIsEditing(false)}
                     >
-                      <div className={`rounded-2xl w-[100px] font-bold ${
-                        cellData?.value === "Complete"
+                      <div className={`rounded-2xl w-[100px] font-bold ${cellData?.value === "Complete"
                           ? "bg-[#D3F2E3] text-[#0A6E3D]"
                           : cellData?.value === "In-process"
-                          ? "bg-[#FFF3D6] text-[#85640B]"
-                          : cellData?.value === "Need to start"
-                          ? "bg-[#E2E8F0] text-[#475569]"
-                          : cellData?.value === "Blocked"
-                          ? "bg-[#FFE1DE] text-[#C22219]"
-                          : "bg-white text-gray-800"
-                      }`}
+                            ? "bg-[#FFF3D6] text-[#85640B]"
+                            : cellData?.value === "Need to start"
+                              ? "bg-[#E2E8F0] text-[#475569]"
+                              : cellData?.value === "Blocked"
+                                ? "bg-[#FFE1DE] text-[#C22219]"
+                                : "bg-white text-gray-800"
+                        }`}
                       >
-                      {cellData?.value || " "}
+                        {cellData?.value || " "}
                       </div>
                     </button>
                   ) : (
@@ -759,11 +757,10 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                       ref={(el) => {
                         if (el) cellRefs.current[cellRef] = el;
                       }}
-                      className={`px-1 text-xs outline-none font-extrabold ${
-                        isSelected
+                      className={`px-1 text-xs outline-none font-extrabold ${isSelected
                           ? "border-2 border-blue-500 bg-blue-50"
                           : "border border-x-gray-200 border-y-gray-100 bg-[#FFFFFF]"
-                      }`}
+                        }`}
                       style={{
                         width: columnWidths[colIndex] || 96,
                         height: rowHeights[rowIndex] || 32,
@@ -785,7 +782,7 @@ export const TableSection = ({ isToolbarVisible, cols, columnNames, onColumnRena
                     />
                   )
                 );
-                
+
               })}
             </div>
           ))}
